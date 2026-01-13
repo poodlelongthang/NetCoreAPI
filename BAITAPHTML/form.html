@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title> <!--HOANG CONG HIEU_2221050356-->
+</head>
+<body>
+<!--INPUT-->
+
+    <!--text-->
+        Nhập tên của bạn <input type="text">
+            <div>----------------</div>
+    <!--radio-->
+        Trái <input type="radio"> Phải <input type="radio">
+            <div>----------------</div>
+    <!--checkbox-->
+        Trái <input type="checkbox"> Phải <input type="checkbox">
+            <div>----------------</div>
+    <!--submit-->
+        <input type="submit">
+            <div>----------------</div>
+    
+    <!-- Nhập họ và tên -->
+     <form>
+        Họ: <input type="text"><p></p>
+        Tên: <input type="text">
+     </form>
+    
+     <form action="/action_page.php" method="get">
+     <form action="/action_page.php" method="post"><p></p>
+    
+
+    Chọn một loại xe:
+    <select id="xe" name="xe">
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+    </select><p></p>
+
+    Danh sách các loại xe:
+    <select id="xe" name="xe" size="4" multiple>
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="fiat">Fiat</option>
+        <option value="audi">Audi</option>
+    </select><p></p>
+
+    <!-- VD đăng nhập -->
+    <form>
+        Tên đăng nhập: <br>
+        <input type="text" id="username" name="username"><br>
+        Mật khẩu: <br>
+        <input type="password" id="pwd" name="pwd">
+    </form><br>
+
+    Môn thể thao yêu thích:
+    <form>
+        <input type="checkbox" id="thethao1" name="thethao1" value="Bóng đá">
+        <label for="thethao1"> Bóng đá</label><br>
+        <input type="checkbox" id="thethao2" name="thethao2" value="Cầu lông">
+        <label for="thethao2"> Cầu lông</label><br>
+        <input type="checkbox" id="thethao3" name="thethao3" value="Trượt ván">
+        <label for="thethao3"> Trượt ván</label>
+    </form>
+</body>
+</html>
