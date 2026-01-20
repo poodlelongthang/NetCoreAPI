@@ -1,0 +1,15 @@
+C:\Net_Core_API\PTPMQL\bin\Debug\net10.0\PTPMQL.exe
+C:\Net_Core_API\PTPMQL\bin\Debug\net10.0\PTPMQL.deps.json
+C:\Net_Core_API\PTPMQL\bin\Debug\net10.0\PTPMQL.runtimeconfig.json
+C:\Net_Core_API\PTPMQL\bin\Debug\net10.0\PTPMQL.dll
+C:\Net_Core_API\PTPMQL\bin\Debug\net10.0\PTPMQL.pdb
+C:\Net_Core_API\PTPMQL\obj\Debug\net10.0\PTPMQL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Net_Core_API\PTPMQL\obj\Debug\net10.0\PTPMQL.AssemblyInfoInputs.cache
+C:\Net_Core_API\PTPMQL\obj\Debug\net10.0\PTPMQL.AssemblyInfo.cs
+C:\Net_Core_API\PTPMQL\obj\Debug\net10.0\PTPMQL.csproj.CoreCompileInputs.cache
+C:\Net_Core_API\PTPMQL\obj\Debug\net10.0\PTPMQL.sourcelink.json
+C:\Net_Core_API\PTPMQL\obj\Debug\net10.0\PTPMQL.dll
+C:\Net_Core_API\PTPMQL\obj\Debug\net10.0\refint\PTPMQL.dll
+C:\Net_Core_API\PTPMQL\obj\Debug\net10.0\PTPMQL.pdb
+C:\Net_Core_API\PTPMQL\obj\Debug\net10.0\PTPMQL.genruntimeconfig.cache
+C:\Net_Core_API\PTPMQL\obj\Debug\net10.0\ref\PTPMQL.dll
