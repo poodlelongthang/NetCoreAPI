@@ -21,4 +21,14 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+
+[HttpPost]
+
+public IActionResult Index(string FullName, string Address)
+    {
+        string strOutput = "Xin Chào " + FullName;
+        ViewBag.Message = strOutput;
+        return View();
+    }
 }
