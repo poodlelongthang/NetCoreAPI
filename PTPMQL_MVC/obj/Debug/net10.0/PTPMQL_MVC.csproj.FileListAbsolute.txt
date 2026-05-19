@@ -373,3 +373,14 @@ C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\refint\PTPMQL_MVC.dll
 C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\PTPMQL_MVC.pdb
 C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\PTPMQL_MVC.genruntimeconfig.cache
 C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\ref\PTPMQL_MVC.dll
+C:\Net_Core_API\PTPMQL_MVC\bin\Debug\net10.0\Bogus.dll
+C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\compressed\58m49hgnyc-{0}-f1ylcx401p-f1ylcx401p.gz
+C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\compressed\zhh66mpnv8-{0}-cyufyooezn-cyufyooezn.gz
+C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\compressed\w3bsfgbmec-{0}-sxdgj04hx6-sxdgj04hx6.gz
+C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\compressed\llnvdv2pni-{0}-xkqvayhjsu-xkqvayhjsu.gz
+C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\compressed\4sku0fp6ep-{0}-13l9rpkm0i-13l9rpkm0i.gz
+c:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\compressed\2nrcr3xhgo-{0}-btel9a4wal-btel9a4wal.gz
+C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\compressed\xarhhaxaz6-{0}-q5l7502j9m-q5l7502j9m.gz
+C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\compressed\4xub5yrws5-{0}-yjwslj5m1j-yjwslj5m1j.gz
+C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\compressed\x2iirruf2q-{0}-r46u5u68p1-r46u5u68p1.gz
+C:\Net_Core_API\PTPMQL_MVC\obj\Debug\net10.0\compressed\fmxqw3adit-{0}-rv6of43u7b-rv6of43u7b.gz

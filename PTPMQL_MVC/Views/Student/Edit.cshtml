@@ -1,39 +1,71 @@
 @model PTPMQL_MVC.Models.Entities.Student
 
-@{
-    ViewData[index: "Title"] = "Edit";
-}
+<div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="editStudentModalLabel">
+                    Edit Student
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <!-- Form -->
+            <form id="editStudentForm">
+                @Html.AntiForgeryToken()
+                <input asp-for="StudentCode" type="hidden" />
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- StudentCode -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                StudentCode
+                            </label>
+                            <input asp-for="StudentCode" class="form-control" placeholder="Enter StudentCode" />
+                            <span asp-validation-for="StudentCode" class="text-danger">
+                            </span>
+                        </div>
+                        <!-- FullName -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                FullName
+                            </label>
+                            <input asp-for="FullName" class="form-control" placeholder="Enter FullName" />
+                            <span asp-validation-for="FullName" class="text-danger">
+                            </span>
+                        </div>
+                        <!-- FacultyId -->
+                        <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Faculty
+                        </label>
 
-<h1>Edit</h1>
+                        <select asp-for="FacultyId"
+                            class="form-select" asp-items="ViewBag.FacultyId">
+                        <option value="">
+                        -- Select Faculty --
+                        </option>
+                        </select>
 
-<h4>Student</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="text" asp-for="StudentCode" />
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
+                        <span asp-validation-for="FacultyId" class="text-danger">
+                        </span>
+                        </div>
+                    
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Update Student
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="FacultyId" class="control-label"></label>
-                <select asp-for="FacultyId" class="form-control" asp-items="ViewBag.FacultyId"></select>
-                <span asp-validation-for="FacultyId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <partial name="_ValidationScriptsPartial" />
 }

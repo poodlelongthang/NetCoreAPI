@@ -27,5 +27,6 @@ namespace PTPMQL_MVC.Data
 
         public DbSet<ExportReceipt> ExportReceipts { get; set; }
         public DbSet<ExportDetail> ExportDetails { get; set; }
+        public DbSet<Book> Books { get; set; }
     }
 }

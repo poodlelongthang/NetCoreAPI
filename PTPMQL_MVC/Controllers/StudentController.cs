@@ -1,240 +1,158 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+
 using PTPMQL_MVC.Data;
 using PTPMQL_MVC.Models.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PTPMQL_MVC.Models.ViewModels;
-using ClosedXML.Excel;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using DocumentFormat.OpenXml.InkML;
 namespace PTPMQL_MVC.Controllers
 {
-    public class StudentController : Controller
+    public class StudentController(ApplicationDbContext context) : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public StudentController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        // GET: Student
-        public async Task<IActionResult> Index()
-        {
-            var result = await _context.Students
-                            .Select(s => new StudentVM
-                            {
-                                StudentCode = s.StudentCode,
-                                FullName = s.FullName,
-                                FacultyName = s.Faculty!.FacultyName
-                            })
-                            .ToListAsync();
-            return View(result);
-        }
-        public IActionResult Import()
+        private readonly ApplicationDbContext _context = context;
+        public IActionResult Index()
         {
             return View();
         }
-
-        // GET: Student/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> GetStudents(int page = 1, int pageSize = 10)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var query = _context.Students
+                .Include(s => s.Faculty)
+                .AsNoTracking()
+                .OrderByDescending(x => x.StudentCode);
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.StudentCode == id);
-            if (student == null)
-            {
-                return NotFound();
-            }
+            var totalItems = await query.CountAsync();
 
-            return View(student);
+            var students = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var result = new PagedResult<Student>
+            {
+                Items = students,
+                CurrentPage = page,
+                PageSize = pageSize,
+                TotalItems = totalItems
+            };
+
+            return PartialView("_StudentTable", result);
         }
-
-        // GET: Student/Create
+        [HttpGet]
         public IActionResult Create()
         {
-            ViewData["FacultyId"] = new SelectList(_context.Faculties, "FacultyId", "FacultyName");
-            return View();
-        }
+            ViewBag.FacultyId = new SelectList(
+                _context.Faculties,"FacultyId","FacultyName"
+            );
 
-        // POST: Student/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+            return PartialView("Create");
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StudentCode,FullName,FacultyId")] Student student)
+        public async Task<IActionResult> Create(Student student)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if (StudentExists(student.StudentCode))
-                {
-                    ModelState.AddModelError("StudentCode", "Ma sinh vien da ton tai");
-                    return View(student);
-                }
-                _context.Add(student);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewBag.FacultyId = new SelectList(
+                _context.Faculties,
+                    "FacultyId",
+                    "FacultyName",
+                student.FacultyId
+                );
+                return PartialView("Create", student);
             }
-            ViewData["FacultyId"] = new SelectList(_context.Faculties, "FacultyId", "FacultyName", student.FacultyId);
-            return View(student);
-        }
 
-        // GET: Student/Edit/5
+            _context.Students.Add(student);
+
+            await _context.SaveChangesAsync();
+
+            return Json(new
+            {
+                success = true
+            });
+        }
+        [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var student = await _context.Students.FindAsync(id);
+
             if (student == null)
             {
                 return NotFound();
             }
-            ViewData["FacultyId"] = new SelectList(_context.Faculties, "FacultyId", "FacultyName", student.FacultyId);
-            return View(student);
+            ViewBag.FacultyId = new SelectList(
+            _context.Faculties,
+                "FacultyId",
+                "FacultyName",
+            student.FacultyId
+            );
+            return PartialView("Edit", student);
         }
-
-        // POST: Student/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("StudentCode,FullName,FacultyId")] Student student)
+        public async Task<IActionResult> Edit(Student student)
         {
-            if (id != student.StudentCode)
+            if (!ModelState.IsValid)
+            {
+                return PartialView("Edit", student);
+            }
+
+            var existingStudent = await _context.Students.FindAsync(student.StudentCode);
+
+            if (existingStudent == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(student);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StudentExists(student.StudentCode))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["FacultyId"] = new SelectList(_context.Faculties, "FacultyId", "FacultyName", student.FacultyId);
-            return View(student);
-        }
+            existingStudent.StudentCode = student.StudentCode;
+            existingStudent.FullName = student.FullName;
+            existingStudent.FacultyId = student.FacultyId;
 
-        // GET: Student/Delete/5
+            await _context.SaveChangesAsync();
+
+            return Json(new
+            {
+                success = true
+            });
+        }
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.StudentCode == id);
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.StudentCode == id);
+
             if (student == null)
             {
                 return NotFound();
             }
 
-            return View(student);
+            return PartialView("Delete", student);
         }
-
-        // POST: Student/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var student = await _context.Students.FindAsync(id);
-            if (student != null)
-            {
-                _context.Students.Remove(student);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ImportExcel(IFormFile file)
+        public async Task<IActionResult> Delete(Student student)
         {
-            if (file == null || file.Length == 0)
+            var existingStudent = await _context.Students
+                .FindAsync(student.StudentCode);
+
+            if (existingStudent == null)
             {
-                ModelState.AddModelError("", "File không hợp lệ");
-                return View("Import");
-            }
-
-            if (!file.FileName.EndsWith(".xlsx"))
-            {
-                ModelState.AddModelError("", "Chỉ chấp nhận file .xlsx");
-                return View("Import");
-            }
-
-            var students = new List<Student>();
-
-            using (var stream = new MemoryStream())
-            {
-                await file.CopyToAsync(stream);
-
-                using (var workbook = new XLWorkbook(stream))
+                return Json(new
                 {
-                    var worksheet = workbook.Worksheet(1);
-                    var rows = worksheet.RangeUsed().RowsUsed().Skip(1); // bỏ header
-
-                    foreach (var row in rows)
-                    {
-                        string studentCode = row.Cell(1).GetValue<string>().Trim();
-                        string fullName = row.Cell(2).GetValue<string>().Trim();
-                        string facultyId = row.Cell(3).GetValue<string>().Trim();
-
-                        if (string.IsNullOrEmpty(studentCode) || studentCode.Length < 6)
-                            continue;
-
-                        if (string.IsNullOrEmpty(fullName))
-                            continue;
-
-                        if (!_context.Faculties.Any(f => f.FacultyId == facultyId))
-                            continue;
-
-                        if (StudentExists(studentCode))
-                            continue;
-
-                        students.Add(new Student
-                        {
-                            StudentCode = studentCode,
-                            FullName = fullName,
-                            FacultyId = facultyId
-                        });
-                    }
-                }
+                    success = false
+                });
             }
 
-            _context.Students.AddRange(students);
+            _context.Students.Remove(existingStudent);
+
             await _context.SaveChangesAsync();
 
-            TempData["Success"] = $"Import thành công {students.Count} sinh viên!";
-            return RedirectToAction(nameof(Index));
-        }
-        private bool StudentExists(string id)
-        {
-            return _context.Students.Any(e => e.StudentCode == id);
-        }
+            return Json(new
+            {
+                success = true
+            });
     }
+}
 }
